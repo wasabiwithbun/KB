@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="KbsModuleSourceMapper">
+
+  <cache />
+  <resultMap id="KbsModuleSourceResultMap" type="KbsModuleSource">
+     <result property="id" column="id" />
+     <result property="typeCode" column="type_code" />
+     <result property="dirCode" column="dir_code" />
+     <result property="fileName" column="file_name" />
+     <result property="filePath" column="file_path" />
+     <result property="title" column="title" />
+     <result property="keyword" column="keyword" />
+     <result property="descript" column="descript" />
+     <result property="uploadDate" column="upload_date" />
+     <result property="indexState" column="index_state" />
+     <result property="typeName" column="type_name" />
+     <result property="purview" column="purview" />
+     <result property="userCode" column="user_code" />
+   </resultMap>
+   
+  <select id="getKbsModuleSourceList" parameterType="KbsModuleSourceCriteria" resultMap="KbsModuleSourceResultMap" >
+    SELECT   
+          t.id,
+          t.type_code,
+          t.dir_code,
+          t.file_name,
+          t.file_path,
+          t.title,
+          t.keyword,
+          t.descript,
+          t.upload_date,
+          t.index_state,
+          t.type_name,
+          t.purview,
+          t.user_code
+    FROM 
+          KBS_SOURCE t
+    WHERE 1=1
+          <if test="typeCode != null and typeCode != '' ">  
+          	AND t.type_code LIKE '%${typeCode}%'
+          </if>
+          <if test="purviewList != null">  
+          	AND t.purview IN
+          	<foreach  collection="purviewList" item="purviewList" separator="," open="(" close=")">
+		    	#{purviewList}
+		     </foreach>
+          </if>
+  	ORDER BY 
+          t.id
+   </select>
+    <select id="getKbsModuleSourceList_COUNT" parameterType="KbsModuleSourceCriteria" resultType="java.lang.Integer" >
+    SELECT COUNT(*)
+    FROM 
+          KBS_SOURCE t
+    WHERE 1=1
+          <if test="typeCode != null and typeCode != '' ">  
+          	AND t.type_code LIKE '%${typeCode}%'
+          </if>
+          <if test="purviewList != null">  
+          	AND t.purview IN
+          	<foreach  collection="purviewList" item="purviewList" separator="," open="(" close=")">
+		    	#{purviewList}
+		     </foreach>
+          </if>
+  	ORDER BY 
+          t.id
+   </select>
+   <select id="getKbsModuleSourceById" parameterType="KbsModuleSource" resultMap="KbsModuleSourceResultMap">
+    SELECT   
+          t.id,
+          t.type_code,
+          t.dir_code,
+          t.file_name,
+          t.file_path,
+          t.title,
+          t.keyword,
+          t.descript,
+          t.upload_date,
+          t.index_state,
+          t.type_name,
+          t.purview,
+          t.user_code
+    FROM 
+          KBS_SOURCE t
+  	WHERE
+          t.id = #{id}
+   </select>
+   
+   <insert id="insertKbsModuleSource" parameterType="KbsModuleSource" keyProperty="id">
+    <selectKey keyProperty="id" resultType="int" order="AFTER">
+	  SELECT seq
+	        FROM sqlite_sequence
+	        WHERE (name = 'KBS_SOURCE')
+	  </selectKey>
+    INSERT INTO KBS_SOURCE
+      (type_code, dir_code, file_name,file_path,title,keyword,descript,upload_date,index_state,type_name,purview,user_code)
+    VALUES
+      (#{typeCode}, #{dirCode}, #{fileName}, #{filePath}, #{title}, #{keyword}, #{descript}, #{uploadDate}, #{indexState}, #{typeName}, #{purview}, #{userCode})
+  </insert>
+  
+  <update id="updateKbsModuleSource" parameterType="KbsModuleSource">
+    UPDATE KBS_SOURCE
+           <trim prefix="SET" suffixOverrides=",">
+           		<if test="typeCode != null and typeCode != '' ">  
+		            type_code = #{typeCode},
+		        </if>
+		        <if test="dirCode != null and dirCode != '' ">  
+		            dir_code = #{dirCode},
+		        </if>
+		        <if test="fileName != null and fileName != '' ">  
+		            file_name = #{fileName},
+		        </if>
+		        <if test="filePath != null and filePath != '' ">  
+		            file_path = #{filePath},
+		        </if>
+		         <if test="title != null and title != '' ">  
+		            title = #{title},
+		        </if>
+		        <if test="keyword != null and keyword != '' ">  
+		            keyword = #{keyword},
+		        </if>
+		        <if test="descript != null and descript != '' ">  
+		            descript = #{descript},
+		        </if>
+		        <if test="uploadDate != null ">  
+		            upload_date = #{uploadDate},
+		        </if>
+		        <if test="indexState != null and indexState != '' ">  
+		            index_state = #{indexState},
+		        </if>
+		        <if test="typeName != null and typeName != '' ">  
+		            type_name = #{typeName},
+		        </if>
+		        <if test="purview != null and purview != '' ">  
+		            purview = #{purview},
+		        </if>
+		        <if test="userCode != null and userCode != '' ">  
+		            user_code = #{userCode}
+		        </if>
+            </trim>
+     WHERE id IN
+     <foreach  collection="idList" item="idList" separator="," open="(" close=")">
+    	#{idList}
+     </foreach>
+  </update>
+  
+  <delete id="deleteKbsModuleSourceByIds" parameterType="KbsModuleSource">
+     DELETE FROM KBS_SOURCE  WHERE id  IN
+     <foreach  collection="idList" item="idList" separator="," open="(" close=")">
+    	#{idList}
+     </foreach>
+  </delete>
+  
+</mapper>

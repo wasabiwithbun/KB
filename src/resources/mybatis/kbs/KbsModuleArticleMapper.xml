@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="KbsModuleArticleMapper">
+
+  <cache />
+  <resultMap id="KbsModuleArticleResultMap" type="KbsModuleArticle">
+     <result property="id" column="id" />
+     <result property="typeCode" column="type_code" />
+     <result property="typeName" column="type_name" />
+     <result property="author" column="author" />
+     <result property="origin" column="origin" />
+     <result property="title" column="title" />
+     <result property="keyword" column="keyword" />
+     <result property="content" column="content" />
+     <result property="releaseDate" column="release_date" />
+     <result property="indexState" column="index_state" />
+     <result property="purview" column="purview" />
+   </resultMap>
+   
+  <select id="getKbsModuleArticleList" parameterType="KbsModuleArticleCriteria" resultMap="KbsModuleArticleResultMap" >
+    SELECT   
+          t.id,
+          t.type_code,
+          t.type_name,
+          t.author,
+          t.origin,
+          t.title,
+          t.keyword,
+          t.content,
+          t.release_date,
+          t.index_state,
+          t.purview
+    FROM 
+          KBS_ARTICLE t
+    WHERE 1=1
+          <if test="typeCode != null and typeCode != '' ">  
+          	AND t.type_code LIKE '%${typeCode}%'
+          </if>
+          <if test="purviewList != null">  
+          	AND t.purview IN
+          	<foreach  collection="purviewList" item="purviewList" separator="," open="(" close=")">
+		    	#{purviewList}
+		     </foreach>
+          </if>
+  	ORDER BY 
+          t.id
+   </select>
+    <select id="getKbsModuleArticleList_COUNT" parameterType="KbsModuleArticleCriteria" resultType="java.lang.Integer" >
+    SELECT COUNT(*)
+    FROM 
+          KBS_ARTICLE t
+    WHERE 1=1
+          <if test="typeCode != null and typeCode != '' ">  
+          	AND t.type_code LIKE '%${typeCode}%'
+          </if>
+          <if test="purviewList != null">  
+          	AND t.purview IN
+          	<foreach  collection="purviewList" item="purviewList" separator="," open="(" close=")">
+		    	#{purviewList}
+		     </foreach>
+          </if>
+  	ORDER BY 
+          t.id
+   </select>
+   <select id="getKbsModuleArticleById" parameterType="KbsModuleArticle" resultMap="KbsModuleArticleResultMap">
+    SELECT   
+         t.id,
+          t.type_code,
+          t.type_name,
+          t.author,
+          t.origin,
+          t.title,
+          t.keyword,
+          t.content,
+          t.release_date,
+          t.index_state,
+          t.purview
+    FROM 
+          KBS_ARTICLE t
+  	WHERE
+          t.id = #{id}
+   </select>
+   
+   <insert id="insertKbsModuleArticle" parameterType="KbsModuleArticle" keyProperty="id">
+    <selectKey keyProperty="id" resultType="int" order="AFTER">
+	  SELECT seq
+	        FROM sqlite_sequence
+	        WHERE (name = 'KBS_ARTICLE')
+	  </selectKey>
+    INSERT INTO KBS_ARTICLE
+      (type_code, type_name, author,origin,title,keyword,content,release_date,index_state,purview)
+    VALUES
+      (#{typeCode}, #{typeName}, #{author}, #{origin}, #{title}, #{keyword}, #{content}, #{releaseDate},#{indexState}, #{purview})
+  </insert>
+  
+  <update id="updateKbsModuleArticle" parameterType="KbsModuleArticle">
+    UPDATE KBS_ARTICLE
+           <trim prefix="SET" suffixOverrides=",">
+           		<if test="typeCode != null and typeCode != '' ">  
+		            type_code = #{typeCode},
+		        </if>
+		        <if test="typeName != null and typeName != '' ">  
+		            type_name = #{typeName},
+		        </if>
+		        <if test="author != null and author != '' ">  
+		            author = #{author},
+		        </if>
+		        <if test="origin != null and origin != '' ">  
+		            origin = #{origin},
+		        </if>
+		         <if test="title != null and title != '' ">  
+		            title = #{title},
+		        </if>
+		        <if test="keyword != null and keyword != '' ">  
+		            keyword = #{keyword},
+		        </if>
+		        <if test="content != null and content != '' ">  
+		            content = #{content},
+		        </if>
+		        <if test="releaseDate != null ">  
+		            release_date = #{releaseDate},
+		        </if>
+		        <if test="indexState != null and indexState != '' ">  
+		            index_state = #{indexState},
+		        </if>
+		        <if test="purview != null and purview != '' ">  
+		            purview = #{purview}
+		        </if>
+            </trim>
+     WHERE id  IN
+     <foreach  collection="idList" item="idList" separator="," open="(" close=")">
+    	#{idList}
+     </foreach>
+  </update>
+  
+  <delete id="deleteKbsModuleArticleByIds" parameterType="KbsModuleArticle">
+     DELETE FROM KBS_ARTICLE WHERE id  IN
+     <foreach  collection="idList" item="idList" separator="," open="(" close=")">
+    	#{idList}
+     </foreach>
+  </delete>
+  
+</mapper>
