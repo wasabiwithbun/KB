@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE toc PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp TOC Version 1.0//EN"
+ "http://java.sun.com/products/javahelp/toc_1_0.dtd">
+<toc version="1.0">
+<tocitem target="kbs" text="欢迎使用丑牛迷你知识库1.0版">
+    <tocitem text="知识搜索">
+      <tocitem target="search" text="知识搜索"/>
+    </tocitem>
+    <tocitem text="知识管理">
+      <tocitem target="type" text="知识分类管理"/>
+      <tocitem target="content" text="内容管理"/>
+      <tocitem target="file" text="文件管理"/>
+    </tocitem>
+    <tocitem text="配置管理">
+      <tocitem target="config" text="配置管理"/>
+    </tocitem>
+</tocitem>
+</toc>
