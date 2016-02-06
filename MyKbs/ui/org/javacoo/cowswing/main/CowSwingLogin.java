@@ -72,6 +72,16 @@ import com.sun.awt.AWTUtilities;
 public class CowSwingLogin extends JFrame {
 	private static final long serialVersionUID = 1L;
 	protected static final Log logger = LogFactory.getLog(CowSwingLogin.class);
+	private static final String TITLE = "丑牛迷你知识库";
+	private static final String UER_NAME = "用户名:";
+	private static final String PASSWORD = "密   码:";
+	private static final String LANGUAGE = "语   言:";
+	private static final String REMBER_ME = "记住我";
+	private static final String AUTO_LOGIN = "自动登录";
+	private static final String EXIT = "退出";
+	private static final String INFO = "聪明在于勤奋,天才在于积累!";
+	private static final String WAITING = "丑牛正在初始化,请稍候...";
+	
 	/** 登陆窗口宽 */
 	private int width = 332;
 	/** 登陆窗口高 */
@@ -149,7 +159,7 @@ public class CowSwingLogin extends JFrame {
 	 */
 	private void initComponents() {
 		getPropertyValues();
-		setTitle("丑牛迷你知识库");
+		setTitle(TITLE);
 
 		setIconImage(ImageManager.getImageByShortName("crawler_logo.png"));
 		buttonIcon = ImageManager.getImageIconByShortName("login_button.png");
@@ -210,27 +220,27 @@ public class CowSwingLogin extends JFrame {
 		inputPane.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
 		inputPane.setPreferredSize(new Dimension(100, 30));
 
-		inputPane.add(createInputLabel("用户名:"));
+		inputPane.add(createInputLabel(UER_NAME));
 		userNameTextField = new JFilterTextField(userIdList);
 		userNameTextField.setText(lastUserId);
 		userNameTextField.setPreferredSize(new Dimension(120, 26));
 		inputPane.add(userNameTextField);
-		inputPane.add(createInputLabel("密   码:"));
+		inputPane.add(createInputLabel(PASSWORD));
 		passwordTextField = new JTextField("");
 		passwordTextField.setPreferredSize(new Dimension(120, 26));
 		inputPane.add(passwordTextField);
-		inputPane.add(createInputLabel("语   言:"));
+		inputPane.add(createInputLabel(LANGUAGE));
 		String[] data = new String[] { "zh_CN" };
 		JComboBox languageComboBox = new JComboBox(data);
 		languageComboBox.setPreferredSize(new Dimension(120, 26));
 		inputPane.add(languageComboBox);
 		inputPane.add(new JLabel());
-		rememberMe = new JCheckBox("记住我");
+		rememberMe = new JCheckBox(REMBER_ME);
 		rememberMe.setOpaque(false);
-		autoLogin = new JCheckBox("自动登录");
+		autoLogin = new JCheckBox(AUTO_LOGIN);
 		autoLogin.setOpaque(false);
 		setupComponent(rememberMe);
-		exitLabel = createInputLabel("退出");
+		exitLabel = createInputLabel(EXIT);
 		exitLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 5));
 		panel.setOpaque(false);
@@ -238,7 +248,7 @@ public class CowSwingLogin extends JFrame {
 		panel.add(rememberMe);
 		panel.add(exitLabel);
 		inputPane.add(panel);
-		inputPane.add(createInputLabel("聪明在于勤奋,天才在于积累!"));
+		inputPane.add(createInputLabel(INFO));
 		centerPane.add(inputPane, "Center");
 
 	}
@@ -340,7 +350,7 @@ public class CowSwingLogin extends JFrame {
 	 */
 	private static void login() {
 		JSplash.getInstance().splashOn();
-		JSplash.getInstance().increaseProgress(0, "丑牛正在初始化,请稍候...");
+		JSplash.getInstance().increaseProgress(0, WAITING);
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				LookAndFeelSelector.setLookAndFeel("OfficeBlue2007");
